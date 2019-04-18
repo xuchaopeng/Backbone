@@ -5,7 +5,7 @@
 //     Zepto.js
 //     (c) 2010-2012 Thomas Fuchs
 //     Zepto.js may be freely distributed under the MIT license.
-; (function ($) {
+;(function($){
   var touch = {},
     touchTimeout, tapTimeout, swipeTimeout,
     longTapDelay = 750, longTapTimeout
@@ -41,11 +41,11 @@
     touch = {}
   }
 
-  $(document).ready(function () {
+  $(document).ready(function(){
     var now, delta
 
     $(document.body)
-      .bind('touchstart', function (e) {
+      .bind('touchstart', function(e){
         now = Date.now()
         delta = now - (touch.last || now)
         touch.el = $(parentIfText(e.touches[0].target))
@@ -56,21 +56,21 @@
         touch.last = now
         longTapTimeout = setTimeout(longTap, longTapDelay)
       })
-      .bind('touchmove', function (e) {
+      .bind('touchmove', function(e){
         cancelLongTap()
         touch.x2 = e.touches[0].pageX
         touch.y2 = e.touches[0].pageY
         if (Math.abs(touch.x1 - touch.x2) > 10)
           e.preventDefault()
       })
-      .bind('touchend', function (e) {
-        cancelLongTap()
+      .bind('touchend', function(e){
+         cancelLongTap()
 
         // swipe
         if ((touch.x2 && Math.abs(touch.x1 - touch.x2) > 30) ||
-          (touch.y2 && Math.abs(touch.y1 - touch.y2) > 30))
+            (touch.y2 && Math.abs(touch.y1 - touch.y2) > 30))
 
-          swipeTimeout = setTimeout(function () {
+          swipeTimeout = setTimeout(function() {
             touch.el.trigger('swipe')
             touch.el.trigger('swipe' + (swipeDirection(touch.x1, touch.x2, touch.y1, touch.y2)))
             touch = {}
@@ -81,7 +81,7 @@
 
           // delay by one tick so we can cancel the 'tap' event if 'scroll' fires
           // ('tap' fires before 'scroll')
-          tapTimeout = setTimeout(function () {
+          tapTimeout = setTimeout(function() {
 
             // trigger universal 'tap' with the option to cancelTouch()
             // (cancelTouch cancels processing of single vs double taps for faster 'tap' response)
@@ -97,7 +97,7 @@
 
             // trigger single tap after 250ms of inactivity
             else {
-              touchTimeout = setTimeout(function () {
+              touchTimeout = setTimeout(function(){
                 touchTimeout = null
                 touch.el.trigger('singleTap')
                 touch = {}
@@ -112,7 +112,8 @@
     $(window).bind('scroll', cancelAll)
   })
 
-    ;['swipe', 'swipeLeft', 'swipeRight', 'swipeUp', 'swipeDown', 'doubleTap', 'tap', 'singleTap', 'longTap'].forEach(function (m) {
-      $.fn[m] = function (callback) { return this.bind(m, callback) }
-    })
+  ;['swipe', 'swipeLeft', 'swipeRight', 'swipeUp', 'swipeDown', 'doubleTap', 'tap', 'singleTap', 'longTap'].forEach(function(m){
+    $.fn[m] = function(callback){ return this.bind(m, callback) }
+  })
 })(Zepto);
+
